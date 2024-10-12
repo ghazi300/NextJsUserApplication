@@ -1,12 +1,17 @@
-"use client"; 
+"use client";
 
 import { useState } from 'react';
 import Image from 'next/image';
 import LogoutButton from "./LogoutButton";
 import Logo from '../../public/images/next-js.svg';
 import { signIn } from 'next-auth/react';
+import { Session } from 'next-auth'; 
 
-const HeaderClient = ({ session }) => {
+interface HeaderClientProps {
+  session: Session | null; 
+}
+
+const HeaderClient: React.FC<HeaderClientProps> = ({ session }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
