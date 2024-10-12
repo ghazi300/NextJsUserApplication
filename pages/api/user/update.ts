@@ -14,13 +14,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === "PUT") {
         const { name, address, birthDate, phoneNumber } = req.body;
-        let formattedBirthDate;
+
+        let formattedBirthDate: string | undefined;
         if (birthDate) {
             const date = new Date(birthDate);
             if (isNaN(date.getTime())) {
                 return res.status(400).json({ error: "Invalid birth date format" });
             }
-            formattedBirthDate = date.toISOString(); 
+            formattedBirthDate = date.toISOString();
         }
 
         try {
@@ -29,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 data: {
                     name,
                     address,
-                    birthDate: formattedBirthDate || undefined, 
+                    birthDate: formattedBirthDate,
                     phoneNumber,
                 },
             });
