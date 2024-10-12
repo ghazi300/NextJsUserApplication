@@ -1,6 +1,7 @@
 import { getRequiredAuthSesion } from "../../../lib/auth";
 import { UpdateUserForm } from "./UpdateUserForm";
 import Head from 'next/head';
+import Image from 'next/image';
 
 export const User = async () => {
   const session = await getRequiredAuthSesion();
@@ -16,7 +17,13 @@ export const User = async () => {
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Profile</h1>
             <div className="avatar mb-4">
               <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src={session.user.image ?? ''} alt="User Avatar" className="object-cover rounded-full" />
+                <Image
+                  src={session.user.image ?? ''}
+                  alt="User Avatar"
+                  className="object-cover rounded-full"
+                  width={96} // Set appropriate width
+                  height={96} // Set appropriate height
+                />
               </div>
             </div>
             <h2 className="text-gray-600 mb-4">{session?.user?.name}</h2>

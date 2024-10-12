@@ -33,7 +33,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
-        setError(`Failed to load user data: ${error.message}`);
+        setError(`Failed to load user data: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     };
 
@@ -119,8 +119,9 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
       });
       setSuccess('User updated successfully!');
       console.log(response.data);
-    } catch (error: any) {
-      setError(error.response?.data?.error || 'Failed to update user');
+    } catch (error: unknown) { // Change any to unknown
+      const errorMessage = (error as { response?: { data?: { error?: string } } })?.response?.data?.error || 'Failed to update user';
+      setError(errorMessage);
       console.error('Error updating user:', error);
     }
   };
@@ -187,7 +188,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
       <div className="form-control mb-4">
         <label className="label">Phone Number</label>
         <input
-          type="tel"
+          type="text"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           className="input input-bordered w-full"
@@ -204,9 +205,13 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
           required
         />
       </div>
-      <button type="submit" className="btn btn-primary w-full">Update User</button>
-      {error && <p className="text-red-600">{error}</p>}
-      {success && <p className="text-green-600">{success}</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {success && <p className="text-green-500">{success}</p>}
+      <button type="submit" className="btn btn-primary w-full">
+        Update User
+      </button>
     </form>
   );
 };
+
+export default UpdateUserForm;
