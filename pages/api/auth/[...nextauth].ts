@@ -22,7 +22,7 @@ export const authConfig = {
             clientSecret: githubSecret,
             authorization: {
                 params: {
-                    redirect_uri: process.env.NEXTAUTH_URL + '/api/auth/callback/github', // Utiliser une variable d'environnement
+                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/github`,
                 },
             },
         }),
@@ -31,8 +31,8 @@ export const authConfig = {
             clientSecret: googleSecret,
             authorization: {
                 params: {
-                    redirect_uri: process.env.NEXTAUTH_URL + '/api/auth/callback/google', // Utiliser une variable d'environnement
-                    scope: 'profile email', // Vérifiez l'orthographe de 'scope'
+                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`,
+                    scope: 'profile email',
                 },
             },
         }),
@@ -44,7 +44,7 @@ export const authConfig = {
                 session.user.id = user.id; // Stocker l'ID utilisateur dans la session
             }
             return session;
-        }
+        },
     },
 } satisfies NextAuthOptions;
 
