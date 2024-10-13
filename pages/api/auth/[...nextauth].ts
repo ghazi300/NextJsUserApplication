@@ -44,11 +44,7 @@ export const authConfig = {
                 session.user.id = user.id; // Stocker l'ID utilisateur dans la session
             }
             return session;
-        },
-        async signIn({ user, account, profile }) {
-            // Vous pouvez ajouter ici des logiques supplémentaires si nécessaire
-            return true;
-        },
+        }
     },
 } satisfies NextAuthOptions;
 
