@@ -28,10 +28,10 @@ export const authConfig = {
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
-            // redirection
             authorization: {
               params: {
                 redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
+                scope: 'email profile',
               },
             },
           }),
