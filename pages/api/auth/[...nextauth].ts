@@ -50,7 +50,7 @@ export const authConfig = {
                 return session; // Gérer l'erreur
             }
         },
-        signIn: async ({ user, account, profile, email, credentials }) => {
+        signIn: async ({ user, account}) => {
             // Vérifier les erreurs d'authentification ici
             if (account && account.provider === "google") {
                 if (!user) {
