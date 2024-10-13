@@ -2,11 +2,13 @@
   "name": "nextjs_app_user",
   "version": "0.1.0",
   "private": true,
-"scripts": {
+  "scripts": {
     "dev": "next dev",
-    "build": "npm prisma generate &&next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "prisma generate && npx prisma db push  && next build",
+    "postinstall": "prisma generate"
+    
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.6.0",
