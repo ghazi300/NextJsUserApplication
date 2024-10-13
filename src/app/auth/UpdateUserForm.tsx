@@ -132,7 +132,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
       <div className="form-control mb-4">
-        <label className="label">Name</label>
+        <label className="label text-gray-600">Name</label>
         <input
           type="text"
           value={name}
@@ -142,7 +142,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
         />
       </div>
       <div className="form-control mb-4">
-        <label className="label">
+        <label className="label text-gray-600">
           <span className="label-text">Address</span>
         </label>
         <input
@@ -173,9 +173,9 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
           )}
         </MapContainer>
       </div>
-
+  
       <div className="form-control mb-4">
-        <label className="label">Birth Date</label>
+        <label className="label text-gray-600">Birth Date</label>
         <input
           type="date"
           value={birthDate}
@@ -186,7 +186,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
         />
       </div>
       <div className="form-control mb-4">
-        <label className="label">Phone Number</label>
+        <label className="label text-gray-600">Phone Number</label>
         <input
           type="text"
           value={phoneNumber}
@@ -196,7 +196,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
         />
       </div>
       <div className="form-control mb-4">
-        <label className="label">Email</label>
+        <label className="label text-gray-600">Email</label>
         <input
           type="email"
           value={email}
@@ -212,6 +212,7 @@ export const UpdateUserForm: React.FC<UpdateUserFormProps> = ({ userId }) => {
       </button>
     </form>
   );
+  
 };
 
 export default UpdateUserForm;

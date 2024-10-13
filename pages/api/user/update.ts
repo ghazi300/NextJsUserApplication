@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         try {
             const user = await prisma.user.update({
-                where: { id: userId },
+                where: { id: userId },  // ObjectId dans MongoDB
                 data: {
                     name,
                     address,

@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === "GET") {
         try {
             const user = await prisma.user.findUnique({
-                where: { id: userId },
+                where: { id: userId }, // MongoDB utilise un ObjectId, assurez-vous que l'ID est dans le bon format
             });
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
