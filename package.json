@@ -2,9 +2,9 @@
   "name": "nextjs_app_user",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+"scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm prisma generate &&next build",
     "start": "next start",
     "lint": "next lint"
   },
