@@ -15,7 +15,7 @@ if (!githubId || !githubSecret || !googleId || !googleSecret) {
 
 export const authConfig = {
     secret: process.env.NEXTAUTH_SECRET,
-    debug: true,
+    debug: true, // Cela activera des journaux supplémentaires pour aider à déboguer
     providers: [
         GithubProvider({
             clientId: githubId,
@@ -25,7 +25,7 @@ export const authConfig = {
                 redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
               },
             },
-          }),
+        }),
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
@@ -35,7 +35,7 @@ export const authConfig = {
                 scopes: ['profile', 'email']
               },
             },
-          })
+        })
     ],
     adapter: PrismaAdapter(prisma),
     callbacks: {
@@ -50,6 +50,23 @@ export const authConfig = {
                 return session; // Gérer l'erreur
             }
         },
+    },
+    events: {
+        async signIn(message) {
+            console.log("User signed in:", message);
+        },
+        async signOut(message) {
+            console.log("User signed out:", message);
+        },
+        async error(message) {
+            console.error("Error occurred during authentication:", message);
+        },
+        async redirect(url, baseUrl) {
+            console.log(`Redirecting to ${url} from ${baseUrl}`);
+        }
+    },
+    pages: {
+        error: '/auth/error' // Rediriger vers une page d'erreur personnalisée si nécessaire
     }
 } satisfies NextAuthOptions;
 
