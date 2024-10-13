@@ -15,24 +15,15 @@ if (!githubId || !githubSecret || !googleId || !googleSecret) {
 
 export const authConfig = {
     secret: process.env.NEXTAUTH_SECRET,
+    debug: true,
     providers: [
         GithubProvider({
             clientId: githubId,
             clientSecret: githubSecret,
-            authorization: {
-              params: {
-                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
-              },
-            },
           }),
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
-            authorization: {
-              params: {
-                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
-              },
-            },
           })
     ],
     adapter: PrismaAdapter(prisma),
