@@ -32,6 +32,7 @@ export const authConfig = {
             authorization: {
               params: {
                 redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
+                scopes: ['profile', 'email']
               },
             },
           })
