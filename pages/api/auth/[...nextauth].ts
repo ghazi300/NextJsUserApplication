@@ -19,10 +19,21 @@ export const authConfig = {
         GithubProvider({
             clientId: githubId,
             clientSecret: githubSecret,
+            authorization: {
+              params: {
+                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
+              },
+            },
           }),
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
+            // redirection
+            authorization: {
+              params: {
+                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
+              },
+            },
           }),
     ],
     adapter: PrismaAdapter(prisma),
@@ -30,12 +41,12 @@ export const authConfig = {
         session: async ({ session, user }) => {
             try {
                 if (session.user) {
-                    session.user.id = user.id; 
+                    session.user.id = user.id; // Stocker l'ID utilisateur dans la session
                 }
                 return session;
             } catch (error) {
                 console.error("Error in session callback:", error);
-                return session;
+                return session; // Gérer l'erreur
             }
         },
     }
