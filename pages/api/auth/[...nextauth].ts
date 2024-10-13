@@ -4,7 +4,6 @@ import prisma from "../../../lib/prisma";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
-// Récupération des variables d'environnement
 const githubId = process.env.GITHUB_ID;
 const githubSecret = process.env.GITHUB_SECRET;
 const googleId = process.env.GOOGLE_ID;
@@ -14,16 +13,16 @@ if (!githubId || !githubSecret || !googleId || !googleSecret) {
     throw new Error('Missing Environment variables for authentication');
 }
 
-export const authConfig: NextAuthOptions = {
+export const authConfig = {
     secret: process.env.NEXTAUTH_SECRET,
-    debug: process.env.NODE_ENV === 'development', // Activer le debug seulement en développement
+    debug: true,
     providers: [
         GithubProvider({
             clientId: githubId,
             clientSecret: githubSecret,
             authorization: {
                 params: {
-                    redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
+                    redirect_uri: process.env.NEXTAUTH_URL + '/api/auth/callback/github', // Utiliser une variable d'environnement
                 },
             },
         }),
@@ -32,21 +31,25 @@ export const authConfig: NextAuthOptions = {
             clientSecret: googleSecret,
             authorization: {
                 params: {
-                    redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
-                    scope: 'profile email', // Notez que 'scope' est utilisé ici, pas 'scopes'
+                    redirect_uri: process.env.NEXTAUTH_URL + '/api/auth/callback/google', // Utiliser une variable d'environnement
+                    scope: 'profile email', // Vérifiez l'orthographe de 'scope'
                 },
             },
         }),
     ],
     adapter: PrismaAdapter(prisma),
     callbacks: {
-        async session({ session, user }) { // Assurez-vous que la fonction est asynchrone
+        session: async ({ session, user }) => {
             if (session.user) {
                 session.user.id = user.id; // Stocker l'ID utilisateur dans la session
             }
-            return session; // Retourner la session, même en cas d'erreur
+            return session;
+        },
+        async signIn({ user, account, profile }) {
+            // Vous pouvez ajouter ici des logiques supplémentaires si nécessaire
+            return true;
         },
     },
-};
+} satisfies NextAuthOptions;
 
 export default NextAuth(authConfig);
