@@ -15,7 +15,7 @@ if (!githubId || !githubSecret || !googleId || !googleSecret) {
 
 export const authConfig = {
     secret: process.env.NEXTAUTH_SECRET,
-    debug: true, // Cela activera des journaux supplémentaires pour aider à déboguer
+    debug: true, // Activer les logs pour le débogage
     providers: [
         GithubProvider({
             clientId: githubId,
@@ -50,20 +50,16 @@ export const authConfig = {
                 return session; // Gérer l'erreur
             }
         },
-    },
-    events: {
-        async signIn(message) {
-            console.log("User signed in:", message);
+        signIn: async ({ user, account, profile, email, credentials }) => {
+            // Vérifier les erreurs d'authentification ici
+            if (account && account.provider === "google") {
+                if (!user) {
+                    console.error("Failed to sign in with Google: user not found.");
+                    return false; // Refuser la connexion si l'utilisateur n'est pas trouvé
+                }
+            }
+            return true; // Autoriser la connexion
         },
-        async signOut(message) {
-            console.log("User signed out:", message);
-        },
-        async error(message) {
-            console.error("Error occurred during authentication:", message);
-        },
-        async redirect(url, baseUrl) {
-            console.log(`Redirecting to ${url} from ${baseUrl}`);
-        }
     },
     pages: {
         error: '/auth/error' // Rediriger vers une page d'erreur personnalisée si nécessaire
