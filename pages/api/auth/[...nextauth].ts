@@ -20,10 +20,20 @@ export const authConfig = {
         GithubProvider({
             clientId: githubId,
             clientSecret: githubSecret,
+            authorization: {
+              params: {
+                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
+              },
+            },
           }),
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
+            authorization: {
+              params: {
+                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
+              },
+            },
           })
     ],
     adapter: PrismaAdapter(prisma),
