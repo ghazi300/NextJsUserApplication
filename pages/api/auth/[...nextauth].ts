@@ -18,8 +18,13 @@ export const authConfig = {
     providers: [
         GithubProvider({
             clientId: githubId,
-            clientSecret: githubSecret
-        }),
+            clientSecret: githubSecret,
+            authorization: {
+              params: {
+                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
+              },
+            },
+          }),
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
