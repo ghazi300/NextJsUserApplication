@@ -4,6 +4,7 @@ import prisma from "../../../lib/prisma";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
+// Récupération des variables d'environnement
 const githubId = process.env.GITHUB_ID;
 const githubSecret = process.env.GITHUB_SECRET;
 const googleId = process.env.GOOGLE_ID;
@@ -13,44 +14,39 @@ if (!githubId || !githubSecret || !googleId || !googleSecret) {
     throw new Error('Missing Environment variables for authentication');
 }
 
-export const authConfig = {
+export const authConfig: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
-    debug: true,
+    debug: process.env.NODE_ENV === 'development', // Activer le debug seulement en développement
     providers: [
         GithubProvider({
             clientId: githubId,
             clientSecret: githubSecret,
             authorization: {
-              params: {
-                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
-              },
+                params: {
+                    redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/github',
+                },
             },
-          }),
+        }),
         GoogleProvider({
             clientId: googleId,
             clientSecret: googleSecret,
             authorization: {
-              params: {
-                redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
-                scopes: ['profile', 'email']
-              },
+                params: {
+                    redirect_uri: 'https://next-js-user-application.vercel.app/api/auth/callback/google',
+                    scope: 'profile email', // Notez que 'scope' est utilisé ici, pas 'scopes'
+                },
             },
-          })
+        }),
     ],
     adapter: PrismaAdapter(prisma),
     callbacks: {
-        session: async ({ session, user }) => {
-            try {
-                if (session.user) {
-                    session.user.id = user.id; // Stocker l'ID utilisateur dans la session
-                }
-                return session;
-            } catch (error) {
-                console.error("Error in session callback:", error);
-                return session; // Gérer l'erreur
+        async session({ session, user }) { // Assurez-vous que la fonction est asynchrone
+            if (session.user) {
+                session.user.id = user.id; // Stocker l'ID utilisateur dans la session
             }
+            return session; // Retourner la session, même en cas d'erreur
         },
-    }
-} satisfies NextAuthOptions;
+    },
+};
 
 export default NextAuth(authConfig);
